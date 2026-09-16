@@ -1,7 +1,7 @@
 module LinkedData
   module Models
     class OntologyFormat < LinkedData::Models::Base
-      VALUES = ["OBO", "OWL", "UMLS", "PROTEGE", "SKOS", "XLSX"]
+      VALUES = ["OBO", "OWL", "UMLS", "PROTEGE", "SKOS", "TDv5"]
 
 
       model :ontology_format, name_with: :acronym
@@ -23,8 +23,8 @@ module LinkedData
         return id.to_s.end_with? "SKOS"
       end
 
-      def xlsx?
-        return id.to_s.end_with? "XLSX"
+      def tdv5?
+        return id.to_s.end_with? "TDv5"
       end
 
       EXTENSIONS = {
@@ -32,7 +32,7 @@ module LinkedData
         obo: ".obo",
         umls: ".ttl",
         skos: ".skos",
-        xlsx: ".xlsx"
+        tdv5: ".xlsx"
       }.freeze
       def file_extension
         self.bring(:acronym) if self.bring?(:acronym)
@@ -40,7 +40,7 @@ module LinkedData
       end
 
       def master_file_extensions
-        return [".xlsx", ".xls", ".csv"] if xlsx?
+        return [".xlsx", ".xls", ".csv"] if tdv5?
         [file_extension]
       end
 

@@ -862,9 +862,9 @@ module LinkedData
         unzip_submission(logger)
         self.bring(:hasOntologyLanguage) if self.bring?(:hasOntologyLanguage)
 
-        if hasOntologyLanguage&.xlsx?
+        if hasOntologyLanguage&.tdv5?
           LinkedData::Parser::OWLAPICommand.new(
-            File.expand_path(ensure_xlsx_converted(logger)),
+            File.expand_path(ensure_tdv5_converted(logger)),
             File.expand_path(self.data_folder.to_s),
             logger: logger)
         else
@@ -876,36 +876,36 @@ module LinkedData
         end
       end
 
-      def xlsx_converted_owl_path
+      def tdv5_converted_owl_path
         File.join(File.expand_path(self.data_folder.to_s), "converted_from_xlsx.owl")
       end
 
-      def ensure_xlsx_converted(logger = Logger.new($stdout))
-        converted = xlsx_converted_owl_path
+      def ensure_tdv5_converted(logger = Logger.new($stdout))
+        converted = tdv5_converted_owl_path
         return converted if File.exist?(converted)
 
         require "ontologies_linked_data/parser/xlsx_converter"
         self.bring(:URI) if self.bring?(:URI)
         self.ontology.bring(:acronym) if self.ontology.bring?(:acronym)
 
-        logger.info("XLSX format detected; converting to OWL via XlsxConverter")
-        logger.info("XLSX path: #{master_file_path}")
+        logger.info("TDv5 format detected; converting to OWL via XlsxConverter")
+        logger.info("TDv5 path: #{master_file_path}")
         owl_xml = LinkedData::Parser::XlsxConverter.convert(master_file_path, self.ontology.acronym, self.URI.to_s)
         File.write(converted, owl_xml)
-        logger.info("XLSX converted to OWL (#{owl_xml.length} bytes) -> #{converted}")
+        logger.info("TDv5 converted to OWL (#{owl_xml.length} bytes) -> #{converted}")
         logger.flush
         converted
       end
 
       def diff_file_path(logger = Logger.new($stdout))
         self.bring(:hasOntologyLanguage) if self.bring?(:hasOntologyLanguage)
-        if hasOntologyLanguage&.xlsx?
-          converted = xlsx_converted_owl_path
+        if hasOntologyLanguage&.tdv5?
+          converted = tdv5_converted_owl_path
           unless File.exist?(converted)
             self.bring(:uploadFilePath) if self.bring?(:uploadFilePath)
             self.bring(:masterFileName) if self.bring?(:masterFileName)
             unzip_submission(logger)
-            ensure_xlsx_converted(logger)
+            ensure_tdv5_converted(logger)
           end
           File.expand_path(converted)
         else

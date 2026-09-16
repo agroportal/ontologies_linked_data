@@ -111,7 +111,7 @@ hasOntologyLanguage:
     "OWL",
     "SKOS",
     "UMLS",
-    "XLSX" ]
+    "TDv5" ]
   metadataMappings: [ "mod:hasRepresentationLanguage", "omv:hasOntologyLanguage", "schema:fileFormat" ]
  
 #Formality level
