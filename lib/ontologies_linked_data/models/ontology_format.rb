@@ -1,7 +1,7 @@
 module LinkedData
   module Models
     class OntologyFormat < LinkedData::Models::Base
-      VALUES = ["OBO", "OWL", "UMLS", "PROTEGE", "SKOS", "TDv5"]
+      VALUES = ["OBO", "OWL", "UMLS", "PROTEGE", "SKOS", "TDV5"]
 
 
       model :ontology_format, name_with: :acronym
@@ -24,7 +24,7 @@ module LinkedData
       end
 
       def tdv5?
-        return id.to_s.end_with? "TDv5"
+        return id.to_s.end_with? "TDV5"
       end
 
       EXTENSIONS = {

@@ -888,11 +888,11 @@ module LinkedData
         self.bring(:URI) if self.bring?(:URI)
         self.ontology.bring(:acronym) if self.ontology.bring?(:acronym)
 
-        logger.info("TDv5 format detected; converting to OWL via XlsxConverter")
-        logger.info("TDv5 path: #{master_file_path}")
+        logger.info("TDV5 format detected; converting to OWL via XlsxConverter")
+        logger.info("TDV5 path: #{master_file_path}")
         owl_xml = LinkedData::Parser::XlsxConverter.convert(master_file_path, self.ontology.acronym, self.URI.to_s)
         File.write(converted, owl_xml)
-        logger.info("TDv5 converted to OWL (#{owl_xml.length} bytes) -> #{converted}")
+        logger.info("TDV5 converted to OWL (#{owl_xml.length} bytes) -> #{converted}")
         logger.flush
         converted
       end
