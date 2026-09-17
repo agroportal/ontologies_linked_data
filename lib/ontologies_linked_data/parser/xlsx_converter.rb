@@ -4,7 +4,7 @@ module LinkedData
   module Parser
     # Converts Crop Ontology Template XLSX files to OWL/RDF XML.
     class XlsxConverter
-      # Raised when the uploaded file does not conform to the TDv5 template
+      # Raised when the uploaded file does not conform to the TDV5 template
       # (missing sheet, missing required columns) — as opposed to downstream
       # RDF/OWLAPI errors. Mapped to the ERROR_TDV5 submission status.
       class TemplateValidationError < ArgumentError; end
@@ -76,7 +76,7 @@ module LinkedData
         # Drop rows that are all nil/empty
         rows.reject! { |row| row.values.all? { |v| v.nil? || (v.is_a?(String) && v.empty?) } }
 
-        # Validate required columns are not empty (per the TDv5 template spec).
+        # Validate required columns are not empty (per the TDV5 template spec).
         # Trait/Method/Scale ID are intentionally excluded: the spec allows leaving
         # them blank for auto-generation, which auto_generate_ids! still does.
         missing_cols = REQUIRED_COLUMNS.select do |col|

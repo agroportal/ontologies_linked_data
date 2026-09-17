@@ -19,7 +19,7 @@ module LinkedData
       USER_READABLE = {
         "RDF"                      => "Parsed successfully",
         "RDF_ERROR"                => "Error parsing",
-        "ERROR_TDV5"               => "Error validating the XLSX/TDv5 template",
+        "ERROR_TDV5"               => "Error validating the TDV5 template",
         "INDEXED"                  => "Indexed terms for search",
         "INDEXED_ALL_DATA"         => "Indexed all the data of the resource",
         "ERROR_INDEXED_ALL_DATA"   => "Error indexeding all the data of the resource",
