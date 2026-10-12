@@ -219,7 +219,7 @@ module LinkedData
             pref_label ||= label
 
             artifacts[:label_triples] << LinkedData::Utils::Triples.label_for_class_triple(
-              c.id, Goo.vocabulary(:metadata_def)[:prefLabel], pref_label, lang
+              c.id, Goo.vocabulary(:metadata_def)[:prefLabel], label, lang
             )
           end
         elsif pref_label_lang
