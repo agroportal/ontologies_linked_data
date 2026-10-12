@@ -325,6 +325,23 @@ SELECT DISTINCT * WHERE {
     refute_nil res["response"]["docs"].select{|doc| doc["resource_id"].eql?('http://www.semanticweb.org/ontologies/epo.owl#OPPIO_t000000')}.first
   end
 
+  def test_generate_missing_labels_per_language
+    submission_parse("MULTILANGTEST", "Multilingual rdfs:label without prefLabel",
+                     "./test/data/ontology_files/multilingual_labels.owl", 1,
+                     process_rdf: true, extract_metadata: false)
+
+    # Read every language, as the UI does with language=all
+    RequestStore.store[:requested_lang] = :ALL
+    sub = LinkedData::Models::Ontology.find("MULTILANGTEST").first.latest_submission
+    cls = LinkedData::Models::Class.find(RDF::URI.new("http://example.org/multilingual_labels#Apple"))
+                                   .in(sub).include(:prefLabel).first
+
+    # Each language keeps its own rdfs:label, not the first one generated
+    assert_equal({ en: "apple", fr: "pomme", it: "mela" }, cls.prefLabel(include_languages: true))
+  ensure
+    RequestStore.store[:requested_lang] = nil
+  end
+
   def test_process_submission_diff
     acronym = 'BRO'
     # Create a 1st version for BRO
