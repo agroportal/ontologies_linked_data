@@ -63,6 +63,8 @@ module LinkedData
             @submission.generate_metrics(logger) if process_metrics?(options)
 
             @submission.generate_diff(logger) if process_diff?(options)
+
+            @submission.generate_foops(logger) if parsed && generate_foops?(options)
           end
           @submission.save
           logger.info("Submission processing of #{@submission.id} completed successfully")
@@ -118,6 +120,12 @@ module LinkedData
 
       def process_diff?(options)
         options.empty? || options[:diff].eql?(true)
+      end
+
+      def generate_foops?(options)
+        return false if @submission.hasOntologyLanguage&.umls?
+
+        options.empty? || options[:generate_foops].eql?(true)
       end
 
       def process_metrics?(options)
