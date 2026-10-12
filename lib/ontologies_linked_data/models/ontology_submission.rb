@@ -300,7 +300,9 @@ module LinkedData
       def self.clear_indexed_content(ontology)
         conn = Goo.init_search_connection(:ontology_data)
         begin
-          conn.delete_by_query("ontology_t:\"#{ontology}\"")
+          # ontology_t is tokenized: "GO" alone also matches "GO-PLUS".
+          # Doc ids end with "_<acronym>", which rules out other acronyms.
+          conn.delete_by_query("ontology_t:\"#{ontology}\" AND id:*_#{RSolr.solr_escape(ontology)}")
         rescue StandardError
           # puts e.message
         end

@@ -383,6 +383,28 @@ class TestOntology < LinkedData::TestOntologyCommon
     assert submissions.empty?
   end
 
+  def test_ontology_delete_clears_ontology_data_index
+    # tokenized ontology_t: a naive "ONT-FOR-TEST" phrase also matches "OTHER-ONT-FOR-TEST"
+    other_acronym = "OTHER-#{@acronym}"
+    conn = Goo.init_search_connection(:ontology_data)
+    doc_id = ->(acronym) { "http://test.org/c1_#{acronym}" }
+    indexed = ->(acronym) { conn.search("id:\"#{doc_id.(acronym)}\"")["response"]["numFound"] }
+    _create_ontology_with_submissions
+
+    # one "all data" document for the deleted ontology, one for another ontology
+    conn.index_document([@acronym, other_acronym].map do |acronym|
+      { id: doc_id.(acronym), ontology_t: acronym,
+        resource_id: "http://test.org/c1", resource_model: "ontology_submission" }
+    end)
+
+    LinkedData::Models::Ontology.find(@acronym).first.delete
+
+    assert_equal 0, indexed.(@acronym)
+    assert_equal 1, indexed.(other_acronym)
+  ensure
+    conn&.delete_by_id(doc_id.(other_acronym))
+  end
+
   def test_latest_any_submission
     count, acronyms, ont = create_ontologies_and_submissions(ont_count: 1, submission_count: 3)
     ont = ont.first

@@ -429,6 +429,7 @@ module LinkedData
 
         # remove index entries
         unindex_all_data(index_commit)
+        OntologySubmission.clear_indexed_content(acronym)
        
         # delete all files
         ontology_dir = File.join(LinkedData.settings.repository_folder, self.acronym.to_s)
@@ -486,7 +487,6 @@ module LinkedData
         query = "submissionAcronym:#{acronym}"
         Class.unindexByQuery(query)
         Class.indexCommit(nil) if commit
-        #OntologySubmission.clear_indexed_content(acronym)
       end
 
       def restricted?
