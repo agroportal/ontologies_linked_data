@@ -46,6 +46,8 @@ require 'ontologies_linked_data/models/base'
 # Require all models and services
 project_root = File.dirname(File.absolute_path(__FILE__))
 # Require base services
+require "ontologies_linked_data/documentation/documentation"
+
 require 'ontologies_linked_data/services/submission_process/submission_process'
 
 # We need to require deterministic - that is why we have the sort.
