@@ -13,8 +13,6 @@ module LinkedData
 
       def generate_foops(logger)
         status = LinkedData::Models::SubmissionStatus.find('FAIRNESS_FOOPS').first
-        raise StandardError, 'SubmissionStatus FAIRNESS_FOOPS is not initialised' if status.nil?
-
         @submission.remove_submission_status(status)
 
         begin
@@ -47,7 +45,8 @@ module LinkedData
         return rdf if rdf && File.exist?(rdf)
 
         @submission.bring(:uploadFilePath) if @submission.bring?(:uploadFilePath)
-        @submission.uploadFilePath
+        @submission.bring(:masterFileName) if @submission.bring?(:masterFileName)
+        @submission.master_file_path
       end
     end
   end

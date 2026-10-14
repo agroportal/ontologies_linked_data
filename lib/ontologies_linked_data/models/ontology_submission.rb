@@ -458,10 +458,6 @@ module LinkedData
         return File.join(self.foops_folder, 'report.json')
       end
 
-      def foops_generated?
-        File.exist?(self.foops_report_path)
-      end
-
       def parsing_log_path
         return File.join(self.data_folder, 'parsing.log')
       end

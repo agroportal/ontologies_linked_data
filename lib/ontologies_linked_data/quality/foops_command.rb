@@ -1,4 +1,3 @@
-require 'shellwords'
 require 'fileutils'
 
 module LinkedData
@@ -35,11 +34,11 @@ module LinkedData
         json_path
       end
 
+      private
+
       def json_path
         File.join(@output_folder, OUTPUT_FILE)
       end
-
-      private
 
       def setup_environment
         if @input_file.nil? || !File.exist?(@input_file)
@@ -56,9 +55,9 @@ module LinkedData
           jvm_options: ["-Dloader.main=#{CLI_MAIN_CLASS}"]
         )
         runner.run(
-          ["-ontFile #{Shellwords.escape(File.expand_path(@input_file.to_s))}",
+          ['-ontFile', File.expand_path(@input_file.to_s),
            CHECK_IRI_FLAG,
-           "-out #{Shellwords.escape(File.expand_path(json_path))}"],
+           '-out', File.expand_path(json_path)],
           label: 'FOOPS'
         )
       end
