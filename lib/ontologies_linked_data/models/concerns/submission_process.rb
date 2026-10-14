@@ -50,6 +50,10 @@ module LinkedData
         LinkedData::Services::SubmissionRDFGenerator.new(self).process(logger, reasoning: reasoning)
       end
 
+      def generate_documentation(logger)
+        LinkedData::Services::SubmissionDocumentationGenerator.new(self).process(logger)
+      end
+
       def generate_metrics(logger)
         LinkedData::Services::SubmissionMetricsCalculator.new(self).process(logger)
       end

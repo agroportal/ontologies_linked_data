@@ -13,7 +13,8 @@ module LinkedData
         "ANNOTATOR", "ERROR_ANNOTATOR",
         "ARCHIVED", "ERROR_ARCHIVED",
         "DIFF", "ERROR_DIFF",
-        "ERROR_TDV5"
+        "ERROR_TDV5",
+        "DOCUMENTATION", "ERROR_DOCUMENTATION"
       ]
 
       USER_READABLE = {
@@ -31,12 +32,15 @@ module LinkedData
         "ANNOTATOR"                => "Processed for use in Annotator",
         "ERROR_ANNOTATOR"          => "Error processing for use in Annotator",
         "DIFF"                     => "Created submission version diff successfully",
-        "ERROR_DIFF"               => "Error creating submission version diff"
+        "ERROR_DIFF"               => "Error creating submission version diff",
+        "DOCUMENTATION"            => "Documentation generated (Widoco)",
+        "ERROR_DOCUMENTATION"      => "Error generating documentation (Widoco)"
       }
 
       USER_IGNORE = [
         "UPLOADED", "ERROR_UPLOADED",
-        "RDF_LABELS", "ERROR_RDF_LABELS"
+        "RDF_LABELS", "ERROR_RDF_LABELS",
+        "DOCUMENTATION", "ERROR_DOCUMENTATION"
       ]
 
       model :submission_status, name_with: :code
