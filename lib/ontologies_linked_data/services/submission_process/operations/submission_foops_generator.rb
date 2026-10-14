@@ -16,7 +16,7 @@ module LinkedData
         @submission.remove_submission_status(status)
 
         begin
-          input_file = foops_input_file
+          input_file = @submission.rdf_path
           output_folder = @submission.foops_folder
 
           logger.info("Assessing FAIRness of #{@submission.id} from #{input_file}")
@@ -38,15 +38,6 @@ module LinkedData
         ensure
           @submission.save
         end
-      end
-
-      def foops_input_file
-        rdf = @submission.rdf_path
-        return rdf if rdf && File.exist?(rdf)
-
-        @submission.bring(:uploadFilePath) if @submission.bring?(:uploadFilePath)
-        @submission.bring(:masterFileName) if @submission.bring?(:masterFileName)
-        @submission.master_file_path
       end
     end
   end
