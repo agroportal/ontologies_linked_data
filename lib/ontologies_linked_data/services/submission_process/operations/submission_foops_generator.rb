@@ -18,25 +18,17 @@ module LinkedData
         @submission.remove_submission_status(status)
 
         begin
-          if portal_url.to_s.strip.empty?
-            logger.info('Skipping FOOPS: LinkedData.settings.foops_portal_url is not configured')
-            logger.flush
-            return
-          end
-
-          if restricted?
-            logger.info("Skipping FOOPS for #{@submission.id}: the ontology is not publicly reachable")
-            logger.flush
-            return
-          end
-
-          url = ontology_url
+          input_file = foops_input_file
           output_folder = @submission.foops_folder
 
-          logger.info("Assessing FAIRness of #{@submission.id} through #{url}")
+          logger.info("Assessing FAIRness of #{@submission.id} from #{input_file}")
           logger.flush
 
-          report_path = LinkedData::Quality::FoopsCommand.new(url, output_folder, logger: logger).generate
+          report_path = LinkedData::Quality::FoopsCommand.new(
+            File.expand_path(input_file.to_s),
+            File.expand_path(output_folder.to_s),
+            logger: logger
+          ).generate
           report = JSON.parse(File.read(report_path))
 
           @submission.add_submission_status(status)
@@ -50,22 +42,12 @@ module LinkedData
         end
       end
 
-      def restricted?
-        ontology = @submission.ontology
-        ontology.bring(:viewingRestriction) if ontology.bring?(:viewingRestriction)
-        !ontology.viewingRestriction.to_s.eql?('public')
-      end
+      def foops_input_file
+        rdf = @submission.rdf_path
+        return rdf if rdf && File.exist?(rdf)
 
-      def portal_url
-        LinkedData.settings.foops_portal_url
-      end
-
-
-
-      def ontology_url
-        ontology = @submission.ontology
-        ontology.bring(:acronym) if ontology.bring?(:acronym)
-        "#{portal_url.to_s.chomp('/')}/ontologies/#{ontology.acronym}"
+        @submission.bring(:uploadFilePath) if @submission.bring?(:uploadFilePath)
+        @submission.uploadFilePath
       end
     end
   end
