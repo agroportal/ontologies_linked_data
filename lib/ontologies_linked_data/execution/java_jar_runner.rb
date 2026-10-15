@@ -47,7 +47,9 @@ module LinkedData
             raise CommandFailedError, "#{label} #{exit_description(status)}. Check logs for details."
           end
 
-          log_output(:debug, label, stdout_file, stderr_file)
+          # Stdout is the tool's own verbose log (FOOPS: tens of KB per run),
+          # only worth keeping on failure.
+          @logger.debug("#{label} stderr: #{File.read(stderr_file.path)}")
           [File.read(stdout_file.path), File.read(stderr_file.path)]
         ensure
           stdout_file.close!
