@@ -13,7 +13,8 @@ module LinkedData
         "ANNOTATOR", "ERROR_ANNOTATOR",
         "ARCHIVED", "ERROR_ARCHIVED",
         "DIFF", "ERROR_DIFF",
-        "ERROR_TDV5"
+        "ERROR_TDV5",
+        "FAIRNESS_FOOPS", "ERROR_FAIRNESS_FOOPS"
       ]
 
       USER_READABLE = {
@@ -31,7 +32,9 @@ module LinkedData
         "ANNOTATOR"                => "Processed for use in Annotator",
         "ERROR_ANNOTATOR"          => "Error processing for use in Annotator",
         "DIFF"                     => "Created submission version diff successfully",
-        "ERROR_DIFF"               => "Error creating submission version diff"
+        "ERROR_DIFF"               => "Error creating submission version diff",
+        "FAIRNESS_FOOPS"           => "FAIRness assessed (FOOPS!)",
+        "ERROR_FAIRNESS_FOOPS"     => "Error assessing FAIRness (FOOPS!)"
       }
 
       USER_IGNORE = [

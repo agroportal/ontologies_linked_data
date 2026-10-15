@@ -450,6 +450,14 @@ module LinkedData
         return File.join(self.data_folder, "owlapi.xrdf")
       end
 
+      def foops_folder
+        return File.join(self.data_folder, 'foops')
+      end
+
+      def foops_report_path
+        return File.join(self.foops_folder, 'report.json')
+      end
+
       def parsing_log_path
         return File.join(self.data_folder, 'parsing.log')
       end
