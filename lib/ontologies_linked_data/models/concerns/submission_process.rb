@@ -54,6 +54,10 @@ module LinkedData
         LinkedData::Services::SubmissionFoopsGenerator.new(self).process(logger)
       end
 
+      def generate_oops(logger)
+        LinkedData::Services::SubmissionOopsGenerator.new(self).process(logger)
+      end
+
       def generate_metrics(logger)
         LinkedData::Services::SubmissionMetricsCalculator.new(self).process(logger)
       end

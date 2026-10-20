@@ -34,6 +34,7 @@ module LinkedData
 
     # Java/JVM options
     @settings.java_max_heap_size            ||= '10240M'
+    @settings.oops_service_url              ||= 'https://oops.linkeddata.es/rest'
     ### these params should be not ussed any more
     # removed so that dependencies shout
     #
