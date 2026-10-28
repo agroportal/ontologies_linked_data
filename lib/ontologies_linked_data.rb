@@ -48,6 +48,7 @@ project_root = File.dirname(File.absolute_path(__FILE__))
 # Require base services
 require 'ontologies_linked_data/execution/java_jar_runner'
 require 'ontologies_linked_data/quality/foops_command'
+require 'ontologies_linked_data/vowl/owl2vowl_command'
 
 require 'ontologies_linked_data/services/submission_process/submission_process'
 
