@@ -458,6 +458,14 @@ module LinkedData
         return File.join(self.foops_folder, 'report.json')
       end
 
+      def oops_folder
+        return File.join(self.data_folder, 'oops')
+      end
+
+      def oops_report_path
+        return File.join(self.oops_folder, 'report.json')
+      end
+
       def parsing_log_path
         return File.join(self.data_folder, 'parsing.log')
       end

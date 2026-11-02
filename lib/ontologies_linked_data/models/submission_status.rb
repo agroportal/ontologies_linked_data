@@ -14,7 +14,8 @@ module LinkedData
         "ARCHIVED", "ERROR_ARCHIVED",
         "DIFF", "ERROR_DIFF",
         "ERROR_TDV5",
-        "FAIRNESS_FOOPS", "ERROR_FAIRNESS_FOOPS"
+        "FAIRNESS_FOOPS", "ERROR_FAIRNESS_FOOPS",
+        "PITFALLS_OOPS", "ERROR_PITFALLS_OOPS"
       ]
 
       USER_READABLE = {
@@ -34,7 +35,9 @@ module LinkedData
         "DIFF"                     => "Created submission version diff successfully",
         "ERROR_DIFF"               => "Error creating submission version diff",
         "FAIRNESS_FOOPS"           => "FAIRness assessed (FOOPS!)",
-        "ERROR_FAIRNESS_FOOPS"     => "Error assessing FAIRness (FOOPS!)"
+        "ERROR_FAIRNESS_FOOPS"     => "Error assessing FAIRness (FOOPS!)",
+        "PITFALLS_OOPS"            => "Modelling pitfalls scanned (OOPS!)",
+        "ERROR_PITFALLS_OOPS"      => "Error scanning modelling pitfalls (OOPS!)"
       }
 
       USER_IGNORE = [
