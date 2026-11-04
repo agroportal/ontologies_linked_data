@@ -149,7 +149,7 @@ module LinkedData
         conf.add_search_backend(:property, service: @settings.property_search_server_url)
         conf.add_redis_backend(host: @settings.goo_redis_host,
                                port: @settings.goo_redis_port)
-        conf.add_query_logger(enabled: @settings.logging, file: @settings.log_file)
+        conf.enable_query_logging(enabled: @settings.logging, file: @settings.log_file)
       end
     rescue StandardError => e
       abort("EXITING: Cannot connect to triplestore and/or search server:\n  #{e}\n#{e.backtrace.join("\n")}")
