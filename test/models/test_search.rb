@@ -159,14 +159,16 @@ class TestSearch < LinkedData::TestCase
     total_triples = Goo.sparql_query_client.query("SELECT  (COUNT(*) as ?c)  FROM <#{ont_sub.id}> WHERE {?s ?p ?o}").first[:c].to_i
 
     response = conn.search('*', rows: count_ids + 100)
-    index_total_triples = response['response']['docs'].map do |doc|
-      count = 0
-      doc.each_value do |v|
-        count += Array(v).size
-      end
-      count -= 6
-      count
-    end.sum
+
+    # Count only RDF predicate fields (type_t(xt), http___..._t(xt)): Solr metadata fields vary by version
+    rdf_field = lambda do |field_name|
+      field_name == 'type_t' ||
+        field_name == 'type_txt' ||
+        (field_name.end_with?('_t', '_txt') && field_name.match?(/\A[a-z]+___/))
+    end
+    index_total_triples = response['response']['docs'].sum do |doc|
+      doc.sum { |k, v| rdf_field.call(k) ? Array(v).size : 0 }
+    end
 
     # TODO: fix maybe in future sometime randomly don't index excactly all the triples
     assert_in_delta total_triples, index_total_triples, 100
