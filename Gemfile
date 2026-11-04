@@ -16,7 +16,7 @@ gem 'rack'
 gem 'rack-test'
 gem 'rake'
 gem 'rest-client'
-gem 'rsolr', '~> 1.0'
+gem 'rsolr', '3.0.0'
 gem 'rubyzip', '1.3.0'
 gem 'roo'
 gem 'rdf-rdfxml'
@@ -45,7 +45,6 @@ group :development do
 end
 # NCBO gems (can be from a local dev path or from rubygems/git)
 gem 'goo', github: 'agroportal/goo', branch: 'master'
-gem 'sparql-client', github: 'ontoportal-lirmm/sparql-client', branch: 'development'
 
 gem 'net-ftp'
 gem 'public_suffix', '~> 5.1.1'

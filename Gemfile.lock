@@ -1,9 +1,10 @@
 GIT
   remote: https://github.com/agroportal/goo.git
-  revision: eafaa40847d3537d3ff07de067397f87382bf662
+  revision: 5ad999bc454d561de6e23cdf9a298d7dddfaf78d
   branch: master
   specs:
     goo (0.0.2)
+      activesupport
       addressable (~> 2.8)
       pry
       rdf
@@ -11,9 +12,11 @@ GIT
       rdf-rdfxml
       rdf-vocab
       redis
+      request_store
       rest-client
-      rsolr
-      sparql-client
+      rsolr (>= 2.6.0)
+      sparql-client (= 3.2.2)
+      stoplight (~> 5.0)
       uuid
 
 GIT
@@ -23,15 +26,6 @@ GIT
   specs:
     ontoportal_testkit (0.1.0)
       rake (>= 13.0)
-
-GIT
-  remote: https://github.com/ontoportal-lirmm/sparql-client.git
-  revision: 736b7650e28db3ce5e3e49511ac30f958a29e8f1
-  branch: development
-  specs:
-    sparql-client (3.2.2)
-      net-http-persistent (~> 4.0, >= 4.0.2)
-      rdf (~> 3.2, >= 3.2.11)
 
 GIT
   remote: https://github.com/ruby-rdf/rdf-raptor.git
@@ -224,8 +218,9 @@ GEM
     roo (2.10.1)
       nokogiri (~> 1)
       rubyzip (>= 1.3.0, < 3.0.0)
-    rsolr (1.1.2)
+    rsolr (3.0.0)
       builder (>= 2.1.2)
+      faraday (>= 1.0, < 3)
     rubocop (1.72.1)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
@@ -251,6 +246,12 @@ GEM
       simplecov (~> 0.19)
     simplecov-html (0.13.1)
     simplecov_json_formatter (0.1.4)
+    sparql-client (3.2.2)
+      net-http-persistent (~> 4.0, >= 4.0.2)
+      rdf (~> 3.2, >= 3.2.11)
+    stoplight (5.8.3)
+      concurrent-ruby
+      zeitwerk
     systemu (2.6.5)
     test-unit-minitest (0.9.1)
       minitest (~> 4.7)
@@ -272,6 +273,7 @@ GEM
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
+    zeitwerk (2.8.3)
 
 PLATFORMS
   ruby
@@ -308,12 +310,11 @@ DEPENDENCIES
   request_store
   rest-client
   roo
-  rsolr (~> 1.0)
+  rsolr (= 3.0.0)
   rubocop
   rubyzip (= 1.3.0)
   simplecov
   simplecov-cobertura
-  sparql-client!
   test-unit-minitest
   thin
   webmock
