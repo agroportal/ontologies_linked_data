@@ -310,7 +310,7 @@ DEPENDENCIES
   request_store
   rest-client
   roo
-  rsolr
+  rsolr (= 3.0.0)
   rubocop
   rubyzip (= 1.3.0)
   simplecov
