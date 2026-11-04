@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/agroportal/goo.git
-  revision: ef30bda17b82030ad1984656f73a5358751a7b1c
-  branch: chore/merge-ncbo-main
+  revision: 5ad999bc454d561de6e23cdf9a298d7dddfaf78d
+  branch: master
   specs:
     goo (0.0.2)
       activesupport
