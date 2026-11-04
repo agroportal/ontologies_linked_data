@@ -1,24 +1,23 @@
-ARG RUBY_VERSION
-ARG DISTRO_NAME=bullseye
+ARG RUBY_VERSION=3.2
+ARG DISTRO=bullseye
+ARG TESTKIT_BASE_IMAGE=ontoportal/testkit-base:ruby${RUBY_VERSION}-${DISTRO}
+FROM ${TESTKIT_BASE_IMAGE}
 
-FROM ruby:$RUBY_VERSION-$DISTRO_NAME
+WORKDIR /app
 
-RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends \
-  openjdk-11-jre-headless \
-  raptor2-utils \
-  wait-for-it \
-  libraptor2-dev \
-  && rm -rf /var/lib/apt/lists/*
+# Keep the old CI slice size (default 500) so goo's sliced loading stays exercised
+ENV GOO_SLICES=100
 
-RUN mkdir -p /srv/ontoportal/ontologies_linked_data
-RUN mkdir -p /srv/ontoportal/bundle
-COPY Gemfile* /srv/ontoportal/ontologies_linked_data/
+COPY Gemfile* *.gemspec ./
 
-WORKDIR /srv/ontoportal/ontologies_linked_data
+# Respect the project's Bundler lock when present.
+RUN if [ -f Gemfile.lock ]; then \
+      BUNDLER_VERSION=$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1 | tr -d ' '); \
+      gem install bundler -v "$BUNDLER_VERSION"; \
+    fi
 
-RUN gem update --system 3.4.22 # the 3.4.22 can be removed if we support Ruby version > 3.0
-RUN gem install bundler
-ENV BUNDLE_PATH=/srv/ontoportal/bundle
-RUN bundle install
+RUN bundle install --jobs 4 --retry 3
 
-COPY . /srv/ontoportal/ontologies_linked_data
+COPY . ./
+
+CMD ["bundle", "exec", "rake"]

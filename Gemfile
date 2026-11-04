@@ -32,6 +32,7 @@ gem 'rdf-raptor', github:'ruby-rdf/rdf-raptor', ref: '6392ceabf71c3233b0f7f0172f
 group :test do
   gem 'email_spec'
   gem 'minitest-reporters', '>= 0.5.0'
+  gem 'ontoportal_testkit', github: 'agroportal/ontoportal_testkit', branch: 'main'
   gem 'pry'
   gem 'simplecov'
   gem 'simplecov-cobertura' # for codecov.io
