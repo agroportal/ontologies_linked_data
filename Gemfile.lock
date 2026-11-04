@@ -17,6 +17,14 @@ GIT
       uuid
 
 GIT
+  remote: https://github.com/agroportal/ontoportal_testkit.git
+  revision: 1f5bf12503350a7ba0b50e368908ae95bd00fff2
+  branch: main
+  specs:
+    ontoportal_testkit (0.1.0)
+      rake (>= 13.0)
+
+GIT
   remote: https://github.com/ontoportal-lirmm/sparql-client.git
   revision: 736b7650e28db3ce5e3e49511ac30f958a29e8f1
   branch: development
@@ -287,6 +295,7 @@ DEPENDENCIES
   net-imap (~> 0.4.18)
   oj
   omni_logger
+  ontoportal_testkit!
   parallel (~> 1.24)
   pony
   pry
@@ -309,3 +318,5 @@ DEPENDENCIES
   thin
   webmock
 
+BUNDLED WITH
+   2.4.19
