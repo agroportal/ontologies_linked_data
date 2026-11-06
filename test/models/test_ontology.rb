@@ -209,8 +209,7 @@ class TestOntology < LinkedData::TestOntologyCommon
 
     # test property roots
     pr = ont.property_roots(sub, extra_include=[:hasChildren, :children])
-    #assert_equal 62, pr.length
-    assert_equal 58, pr.length
+    assert_equal 62, pr.length
 
     # verify sorting
     assert_equal "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#AlgorithmPurpose", pr[0].id.to_s
@@ -224,8 +223,7 @@ class TestOntology < LinkedData::TestOntologyCommon
     assert_equal 33, dpr.length
     # count annotation properties
     apr = pr.select { |p| p.class == LinkedData::Models::AnnotationProperty }
-    #assert_equal 11, apr.length
-    assert_equal 7, apr.length
+    assert_equal 11, apr.length
     # check for non-root properties
     assert_empty pr.select { |p| ["http://www.w3.org/2004/02/skos/core#broaderTransitive",
                   "http://www.w3.org/2004/02/skos/core#topConceptOf",
