@@ -210,7 +210,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT DISTINCT * WHERE {
 <http://purl.obolibrary.org/obo/TAO_0001044>
-  <http://data.bioontology.org/metadata/obo/part_of> ?x . }
+  <http://purl.obolibrary.org/obo/OBO_REL#_part_of> ?x . }
     eos
     count = 0
     Goo.sparql_query_client.query(qcount).each_solution do |sol|
@@ -218,6 +218,20 @@ SELECT DISTINCT * WHERE {
       assert sol[:x].to_s["TAO_0000732"]
     end
     assert count == 1
+
+    # The wrapper used to emit each OBO relationship twice: under
+    # metadata/obo/<rel> and under the property's own IRI. Guard against
+    # the duplicate coming back.
+    qlegacy = <<-eos
+SELECT DISTINCT * WHERE {
+<http://purl.obolibrary.org/obo/TAO_0001044>
+  <http://data.bioontology.org/metadata/obo/part_of> ?x . }
+    eos
+    count = 0
+    Goo.sparql_query_client.query(qlegacy).each_solution do |sol|
+      count += 1
+    end
+    assert_equal 0, count
 
     sub = LinkedData::Models::OntologySubmission.where(ontology: [acronym: "TAO-TEST"]).first
     assert_equal(3, sub.roots.length, "Incorrect number of root classes")
@@ -492,8 +506,7 @@ SELECT DISTINCT * WHERE {
                      "./test/data/ontology_files/BRO_v3.5.owl", 1,
                      process_rdf: true, extract_metadata: false, index_properties: true)
     res = LinkedData::Models::OntologyProperty.search("*:*", {:fq => "submissionAcronym:\"BRO\"", :start => 0, :rows => 80})
-    #assert_equal 81, res["response"]["numFound"] # if 81 if owlapi import skos properties
-    assert_equal 77, res["response"]["numFound"] # if 81 if owlapi import skos properties
+    assert_equal 81, res["response"]["numFound"] # 81 now that owlapi imports SKOS properties
     found = 0
 
     res["response"]["docs"].each do |doc|

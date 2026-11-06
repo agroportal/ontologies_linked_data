@@ -153,8 +153,8 @@ class TestOntology < LinkedData::TestOntologyCommon
     ont.bring(:submissions)
     sub = ont.submissions[0]
     props = ont.properties()
-    #assert_equal 83, props.length
-    assert_equal 79, props.length
+    # 83 now that owlapi imports SKOS properties
+    assert_equal 83, props.length
 
     # verify sorting
     assert_equal "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#AlgorithmPurpose", props[0].id.to_s
