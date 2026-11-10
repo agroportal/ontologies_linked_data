@@ -68,9 +68,9 @@ class TestUserOAuthAuthentication < LinkedData::TestCase
       assert_equal auth_user.id, user.id
 
       if provider.eql?(:github)
-        assert_equal data[:githubId], auth_user.githubId
+        assert_equal_or_nil data[:githubId], auth_user.githubId
       elsif provider.eql?(:orcid)
-        assert_equal data[:orcidId], auth_user.orcidId
+        assert_equal_or_nil data[:orcidId], auth_user.orcidId
       end
       users << user
     end

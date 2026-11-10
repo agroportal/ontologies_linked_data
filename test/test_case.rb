@@ -168,6 +168,15 @@ module LinkedData
       LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
     end
 
+    ##
+    # Minitest 6 refuses assert_equal(nil, actual). Generic comparisons
+    # (attribute mappings, indexed docs) legitimately expect nil.
+    def assert_equal_or_nil(expected, actual, msg = nil)
+      return assert_nil(actual, msg) if expected.nil?
+
+      assert_equal(expected, actual, msg)
+    end
+
     def delete_goo_models(gooModelArray)
       gooModelArray.each do |m|
         m.delete
