@@ -1,3 +1,4 @@
+require 'active_support' # ActiveSupport 7+ needs it before any core_ext
 require 'active_support/core_ext/string'
 require 'cgi'
 
