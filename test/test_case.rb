@@ -75,8 +75,9 @@ module LinkedData
   # suite hooks wrap Minitest's own entry points instead:
   #
   #   Minitest.run                  -> RunHooks: wipe the triple store
-  #     Runnable.run_suite (class)  -> SuiteHooks: before_suite/after_suite
-  #       test_* methods
+  #     Minitest.run_all_suites     -> RunHooks: suites in name order
+  #       Runnable.run_suite (class)  -> SuiteHooks: before_suite/after_suite
+  #         test_* methods (random order)
   module SuiteHooks
     def run_suite(reporter, options = {})
       # Skip suites --name filtered out, their before_suite is costly
@@ -102,6 +103,14 @@ module LinkedData
       super
     ensure
       TestCase.backend_4s_delete
+    end
+
+    # Minitest 4 ran suites by name, 5+ shuffles them. Suites share the
+    # triple store and some still rely on what earlier ones leave behind.
+    def run_all_suites(reporter, options)
+      Minitest::Runnable.runnables
+                        .sort_by { |suite| suite.name.to_s }
+                        .map { |suite| suite.run_suite(reporter, options) }
     end
   end
 
