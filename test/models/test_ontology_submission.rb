@@ -87,7 +87,7 @@ class TestOntologySubmission < LinkedData::TestOntologyCommon
 
     zipfile = "./test/data/ontology_files/evoc_v2.9.zip"
     assert !LinkedData::Utils::FileHelpers.automaster?(zipfile, ".obo")
-    assert_equal nil, LinkedData::Utils::FileHelpers.automaster(zipfile, ".obo")
+    assert_nil LinkedData::Utils::FileHelpers.automaster(zipfile, ".obo")
   end
 
   def test_duplicated_file_names

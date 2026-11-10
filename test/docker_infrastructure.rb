@@ -51,7 +51,7 @@ def docker_tests
     require_relative "test_case"
     test_files.each {|f| require f}
 
-    MiniTest::Unit.runner.run
+    Minitest.run
   rescue => e
     puts e.message
     puts e.backtrace.join("\n\t")
@@ -95,7 +95,7 @@ def docker_tests_forked(forks)
 
           test_files_sliced[i].each {|f| require f}
 
-          MiniTest::Unit.runner.run
+          Minitest.run
         rescue => e
           sio << "\n#{e.message}\n#{e.backtrace.join("\t\n")}"
         ensure
