@@ -44,7 +44,7 @@ group :development do
   gem 'rubocop', require: false
 end
 # NCBO gems (can be from a local dev path or from rubygems/git)
-gem 'goo', github: 'agroportal/goo', branch: 'chore/ruby-3.4.12'
+gem 'goo', github: 'agroportal/goo', branch: 'master'
 
 gem 'net-ftp'
 gem 'public_suffix', '~> 5.1.1'

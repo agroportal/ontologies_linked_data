@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/agroportal/goo.git
-  revision: 24adc28751591673ec5ce3d36c2fdcc32339e844
-  branch: chore/ruby-3.4.12
+  revision: 8e25ea9dc014cd9530d25366b0ad1901108d1f13
+  branch: master
   specs:
     goo (0.0.2)
       activesupport
