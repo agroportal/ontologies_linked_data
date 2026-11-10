@@ -1,8 +1,8 @@
-require "test/unit"
+require "minitest/autorun"
 require 'pry'
 require_relative "../../lib/ontologies_linked_data"
 
-class ToHashTest < MiniTest::Unit::TestCase
+class ToHashTest < Minitest::Test
   class Person
     include LinkedData::Hypermedia::Resource
 

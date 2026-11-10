@@ -40,10 +40,9 @@ if ENV['OVERRIDE_CONFIG'] == 'true'
 end
 
 
-require 'minitest/unit'
+require 'minitest/autorun'
 require 'webmock/minitest'
 WebMock.allow_net_connect!
-MiniTest::Unit.autorun
 
 # Check to make sure you want to run if not pointed at localhost
 safe_hosts = Regexp.new(/localhost|-ut|ncbo-dev*|ncbo-unittest*/)
@@ -72,40 +71,53 @@ unless LinkedData.settings.goo_host.match(safe_hosts) &&
 end
 
 module LinkedData
-  class Unit < MiniTest::Unit
-    def before_suites
-      # code to run before the first test (gets inherited in sub-tests)
-    end
+  # Minitest 5+ dropped custom runners (MiniTest::Unit.runner=), so the
+  # suite hooks wrap Minitest's own entry points instead:
+  #
+  #   Minitest.run                  -> RunHooks: wipe the triple store
+  #     Minitest.run_all_suites     -> RunHooks: suites in name order
+  #       Runnable.run_suite (class)  -> SuiteHooks: before_suite/after_suite
+  #         test_* methods (random order)
+  module SuiteHooks
+    def run_suite(reporter, options = {})
+      # Skip suites --name filtered out, their before_suite is costly
+      return if filter_runnable_methods(options).empty?
 
-    def after_suites
-      # code to run after the last test (gets inherited in sub-tests)
-    end
-
-    def _run_suites(suites, type)
-      TestCase.backend_4s_delete
-      before_suites
-      super(suites, type)
-    ensure
-      TestCase.backend_4s_delete
-      after_suites
-    end
-
-    def _run_suite(suite, type)
-      suite.before_suite if suite.respond_to?(:before_suite)
-      super(suite, type)
-    rescue Exception => e
-      puts e.message
-      puts e.backtrace.join("\n\t")
-      puts 'Traced from:'
-      raise e
-    ensure
-      suite.after_suite if suite.respond_to?(:after_suite)
+      begin
+        before_suite if respond_to?(:before_suite)
+        super
+      rescue Exception => e
+        puts e.message
+        puts e.backtrace.join("\n\t")
+        puts 'Traced from:'
+        raise e
+      ensure
+        after_suite if respond_to?(:after_suite)
+      end
     end
   end
 
-  MiniTest::Unit.runner = LinkedData::Unit.new
+  module RunHooks
+    def run(*args)
+      TestCase.backend_4s_delete
+      super
+    ensure
+      TestCase.backend_4s_delete
+    end
 
-  class TestCase < MiniTest::Unit::TestCase
+    # Minitest 4 ran suites by name, 5+ shuffles them. Suites share the
+    # triple store and some still rely on what earlier ones leave behind.
+    def run_all_suites(reporter, options)
+      Minitest::Runnable.runnables
+                        .sort_by { |suite| suite.name.to_s }
+                        .map { |suite| suite.run_suite(reporter, options) }
+    end
+  end
+
+  Minitest::Runnable.singleton_class.prepend(SuiteHooks)
+  Minitest.singleton_class.prepend(RunHooks)
+
+  class TestCase < Minitest::Test
 
     # Ensure all threads exit on any exception
     Thread.abort_on_exception = true
@@ -163,6 +175,15 @@ module LinkedData
     # Delete all ontologies and their submissions
     def delete_ontologies_and_submissions
       LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
+    end
+
+    ##
+    # Minitest 6 refuses assert_equal(nil, actual). Generic comparisons
+    # (attribute mappings, indexed docs) legitimately expect nil.
+    def assert_equal_or_nil(expected, actual, msg = nil)
+      return assert_nil(actual, msg) if expected.nil?
+
+      assert_equal(expected, actual, msg)
     end
 
     def delete_goo_models(gooModelArray)

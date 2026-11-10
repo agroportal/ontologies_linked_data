@@ -42,11 +42,11 @@ class TestArtefactDistribution < LinkedData::TestOntologyCommon
                         if expected_value.respond_to?(:id) && v.respond_to?(:id)
                             assert_equal expected_value.id, v.id
                         else
-                            assert_equal expected_value, v
+                            assert_equal_or_nil expected_value, v
                         end
                     end
                 else
-                    assert_equal value_submission_attr, value_distribution_attr
+                    assert_equal_or_nil value_submission_attr, value_distribution_attr
                 end
             when :metric
                 metrics_obj = latest_sub.metrics
@@ -55,7 +55,7 @@ class TestArtefactDistribution < LinkedData::TestOntologyCommon
                                                 else
                                                     0
                                                 end
-                assert_equal value_distribution_attr, value_submission_metric_attr
+                assert_equal_or_nil value_submission_metric_attr, value_distribution_attr
             end
         end
     end

@@ -117,10 +117,10 @@ class TestSearch < LinkedData::TestCase
       select_agent.bring_remaining
 
       assert_equal a['name_text'], select_agent.name
-      assert_equal a['email_text'], select_agent.email
+      assert_equal_or_nil a['email_text'], select_agent.email
       assert_equal a['agentType_t'], select_agent.agentType
-      assert_equal(a['affiliations_txt'], select_agent.affiliations&.map { |x| x.bring_remaining.embedded_doc })
-      assert_equal(a['identifiers_texts'], select_agent.identifiers&.map { |x| x.bring_remaining.embedded_doc })
+      assert_equal_or_nil(a['affiliations_txt'], select_agent.affiliations&.map { |x| x.bring_remaining.embedded_doc })
+      assert_equal_or_nil(a['identifiers_texts'], select_agent.identifiers&.map { |x| x.bring_remaining.embedded_doc })
       assert_equal a['creator_t'], select_agent.creator.bring_remaining.embedded_doc
     end
 

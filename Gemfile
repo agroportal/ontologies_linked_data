@@ -1,8 +1,9 @@
 source 'https://rubygems.org'
 
-gem 'activesupport', '~> 4'
+gem 'activesupport', '~> 8.1'
 gem 'addressable', '~> 2.8'
 gem 'bcrypt', '~> 3.0'
+gem 'csv'
 gem 'cube-ruby', require: 'cube'
 gem 'faraday', '~> 1.9'
 gem 'ffi'
@@ -36,7 +37,6 @@ group :test do
   gem 'pry'
   gem 'simplecov'
   gem 'simplecov-cobertura' # for codecov.io
-  gem 'test-unit-minitest'
   gem 'webmock'
 end
 
