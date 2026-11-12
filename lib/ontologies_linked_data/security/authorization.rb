@@ -19,6 +19,8 @@ module LinkedData
                                             ])
 
       def call(env)
+        Thread.current[:remote_user] = nil
+
         req = Rack::Request.new(env)
         params = req.params
 
@@ -52,6 +54,8 @@ module LinkedData
           save_apikey_in_cookie(env, headers, apikey, params)
           [status, headers, response]
         end
+      ensure
+        Thread.current[:remote_user] = nil
       end
 
       # Skip auth unless security is enabled or for routes we know should be allowed
