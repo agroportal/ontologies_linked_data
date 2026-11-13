@@ -110,6 +110,7 @@ class TestNotifications < LinkedData::TestCase
       subscription.bring :user
       admin_mails =  LinkedData::Utils::Notifier.admin_mails(ont)
       mail_sent_count = subscription.user.size + 1
+    ont.bring(:submissions) if ont.bring?(:submissions)
       mails = all_emails.last(mail_sent_count)
       assert_equal mail_sent_count, mails.size # subscribed users + support mail
 

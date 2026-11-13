@@ -120,6 +120,14 @@ module LinkedData
         return (ready_status_codes - status_codes).size == 0
       end
 
+      def self.status_codes_for(status)
+        status = Array(status)
+        return nil if status.empty? || status.include?(:any)
+        return get_ready_status if status.include?(:ready)
+
+        status.map { |s| s.to_s.upcase }
+      end
+
       def self.get_status_codes(status)
         return status.map { |s| s.get_code_from_id() }
       end
