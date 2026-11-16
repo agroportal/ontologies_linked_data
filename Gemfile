@@ -1,8 +1,9 @@
 source 'https://rubygems.org'
 
-gem 'activesupport', '~> 4'
+gem 'activesupport', '~> 8.1'
 gem 'addressable', '~> 2.8'
 gem 'bcrypt', '~> 3.0'
+gem 'csv'
 gem 'cube-ruby', require: 'cube'
 gem 'faraday', '~> 1.9'
 gem 'ffi'
@@ -16,8 +17,8 @@ gem 'rack'
 gem 'rack-test'
 gem 'rake'
 gem 'rest-client'
-gem 'rsolr', '~> 1.0'
-gem 'rubyzip', '1.3.0'
+gem 'rsolr', '3.0.0'
+gem 'rubyzip', '~> 3.0'
 gem 'roo'
 gem 'rdf-rdfxml'
 gem 'thin'
@@ -32,10 +33,10 @@ gem 'rdf-raptor', github:'ruby-rdf/rdf-raptor', ref: '6392ceabf71c3233b0f7f0172f
 group :test do
   gem 'email_spec'
   gem 'minitest-reporters', '>= 0.5.0'
+  gem 'ontoportal_testkit', github: 'agroportal/ontoportal_testkit', branch: 'main'
   gem 'pry'
   gem 'simplecov'
   gem 'simplecov-cobertura' # for codecov.io
-  gem 'test-unit-minitest'
   gem 'webmock'
 end
 
@@ -44,7 +45,6 @@ group :development do
 end
 # NCBO gems (can be from a local dev path or from rubygems/git)
 gem 'goo', github: 'agroportal/goo', branch: 'master'
-gem 'sparql-client', github: 'ontoportal-lirmm/sparql-client', branch: 'development'
 
 gem 'net-ftp'
 gem 'public_suffix', '~> 5.1.1'
