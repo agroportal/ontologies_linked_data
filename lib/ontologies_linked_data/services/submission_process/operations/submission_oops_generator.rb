@@ -20,7 +20,7 @@ module LinkedData
           logger.info("Scanning #{@submission.id} for modelling pitfalls from #{input_file}")
           logger.flush
 
-          raw = LinkedData::Quality::OopsService.new(
+          raw = LinkedData::Quality::OopsCommand.new(
             File.expand_path(input_file.to_s),
             File.expand_path(output_folder.to_s),
             logger: logger
