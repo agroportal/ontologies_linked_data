@@ -2,13 +2,13 @@ OOPS! CLI runnable jar — build provenance
 ==========================================
 
 Artifact:  bin/oops-0.3.0-SNAPSHOT.jar  (symlinked as bin/oops.jar)
-SHA-256:   8a6ff06c702842056278e8767a4a877a1ece47a307cf909cc9ae00147837a715
+SHA-256:   b4804b3f06b9cec75406ef058ad1a6307e6be2797bea4d52bafa0be10eb0cc73
 
 Source
 ------
 Fork:      https://github.com/WailKouicemm/OOPS
 Branch:    feat/cli-rdfxml-output
-Commit:    cde6b498986e4455423a22d516b79de8662dbe7f
+Commit:    3b07cf01b499e543a238ba370314691b56880920
 Based on:  oeg-upm/OOPS @ 11572ea6b31cba29dd3f8a443e24311652f059de
 
 Patch
@@ -17,7 +17,8 @@ The fork adds a `--out/--output/-o` CLI option to es.upm.fi.oeg.oops.Cli
 that writes the pitfall report to the given path in RDF/XML (the format
 OntoPortal's OopsReport parser consumes), instead of the upstream hard-coded
 Turtle output `tstOut.model.ttl`. Upstream behaviour is kept when --out is
-omitted.
+omitted. The bundled log4j root level is also lowered from DEBUG to WARN so
+runs stay quiet.
 
 Build
 -----
