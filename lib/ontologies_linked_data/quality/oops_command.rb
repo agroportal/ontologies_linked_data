@@ -8,8 +8,6 @@ module LinkedData
     class OopsCommandInputFileNotFoundError < OopsCommandError; end
     class OopsCommandOutputNotGeneratedException < OopsCommandError; end
 
-    # Runs OOPS! locally from its runnable jar, the way owlapi and FOOPS! are
-    # run, instead of posting the ontology to the external OOPS! web service.
     class OopsCommand
 
       OUTPUT_FILE = 'report.rdf'.freeze
