@@ -49,11 +49,11 @@ class TestArtefact < LinkedData::TestOntologyCommon
                         if expected_value.respond_to?(:id) && v.respond_to?(:id)
                             assert_equal expected_value.id, v.id
                         else
-                            assert_equal expected_value, v
+                            assert_equal_or_nil expected_value, v
                         end
                     end
                 else
-                    assert_equal value_ontology_attr, value_artefact_attr 
+                    assert_equal_or_nil value_ontology_attr, value_artefact_attr 
                 end
             when :ontology_submission
                 value_submission_attr = latest_sub.send(mapped_attr)
@@ -63,11 +63,11 @@ class TestArtefact < LinkedData::TestOntologyCommon
                         if v.respond_to?(:id) && value_submission_attr[i].respond_to?(:id)
                             assert_equal v.id, value_submission_attr[i].id
                         else
-                            assert_equal v, value_submission_attr[i]
+                            assert_equal_or_nil value_submission_attr[i], v
                         end
                     end
                 else
-                    assert_equal value_artefact_attr, value_submission_attr
+                    assert_equal_or_nil value_submission_attr, value_artefact_attr
                 end
             when :metric
                 metrics_obj = latest_sub.metrics
@@ -76,7 +76,7 @@ class TestArtefact < LinkedData::TestOntologyCommon
                                                 else
                                                     0
                                                 end
-                assert_equal value_artefact_attr, value_submission_metric_attr
+                assert_equal_or_nil value_submission_metric_attr, value_artefact_attr
             end
         end
 

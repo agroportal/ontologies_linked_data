@@ -27,7 +27,7 @@ class TestSchemes < LinkedData::TestOntologyCommon
     schemes.each_with_index do |x, i|
       scheme_test = schemes_test[i]
       assert_equal scheme_test[:id], x.id.to_s
-      assert_equal scheme_test[:prefLabel], x.prefLabel
+      assert_equal_or_nil scheme_test[:prefLabel], x.prefLabel
     end
   end
 
