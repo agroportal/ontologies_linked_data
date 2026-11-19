@@ -476,14 +476,6 @@ module LinkedData
         return File.join(self.data_folder, 'widoco')
       end
 
-      def documentation_index_path
-        return File.join(self.documentation_folder, 'index-en.html')
-      end
-
-      def documentation_generated?
-        File.exist?(self.documentation_index_path)
-      end
-
       def parsing_log_path
         return File.join(self.data_folder, 'parsing.log')
       end

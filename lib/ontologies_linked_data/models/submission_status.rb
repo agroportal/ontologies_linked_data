@@ -45,8 +45,7 @@ module LinkedData
 
       USER_IGNORE = [
         "UPLOADED", "ERROR_UPLOADED",
-        "RDF_LABELS", "ERROR_RDF_LABELS",
-        "DOCUMENTATION", "ERROR_DOCUMENTATION"
+        "RDF_LABELS", "ERROR_RDF_LABELS"
       ]
 
       model :submission_status, name_with: :code

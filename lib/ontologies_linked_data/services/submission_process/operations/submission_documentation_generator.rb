@@ -42,7 +42,8 @@ module LinkedData
         return rdf if rdf && File.exist?(rdf)
 
         @submission.bring(:uploadFilePath) if @submission.bring?(:uploadFilePath)
-        @submission.uploadFilePath
+        @submission.bring(:masterFileName) if @submission.bring?(:masterFileName)
+        @submission.master_file_path
       end
 
     end

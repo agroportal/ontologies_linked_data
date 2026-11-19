@@ -10,8 +10,6 @@ module LinkedData
     end
     class InputFileNotFoundError < DocumentationException
     end
-    class WidocoException < DocumentationException
-    end
     class OutputNotGeneratedException < DocumentationException
     end
   end
