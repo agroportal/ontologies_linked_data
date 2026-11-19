@@ -144,6 +144,12 @@ module LinkedData
       attribute :usedBy, namespace: :voaf, type: %i[uri list]
       attribute :workTranslation, namespace: :schema, type: %i[uri list]
       attribute :translationOfWork, namespace: :schema, type: %i[uri list]
+      # Class(es) the ontology declares as display roots via IAO:0000700. No
+      # namespace: the source property has a numeric local name (IAO_0000700), so
+      # it is stored under the default :metadata namespace and read from the source
+      # IRI via metadataMappings in config/schemes/ontology_submission.yml (same
+      # pattern as obsoleteParent).
+      attribute :hasOntologyRootTerm, type: %i[list uri]
 
       # Content metadata
       attribute :uriRegexPattern, namespace: :void
@@ -374,7 +380,7 @@ module LinkedData
         end
 
         zip = zipped?
-        files = LinkedData::Utils::FileHelpers.files_from_zip(self.uploadFilePath) if zip
+        files = LinkedData::Utils::FileHelpers.filenames_in_archive(self.uploadFilePath) if zip
 
         if not zip and self.masterFileName.nil?
           return true
@@ -404,7 +410,7 @@ module LinkedData
 
         elsif zip and not self.masterFileName.nil?
           # if zip and the user chose a file then we make sure the file is in the list.
-          files = LinkedData::Utils::FileHelpers.files_from_zip(self.uploadFilePath)
+          files = LinkedData::Utils::FileHelpers.filenames_in_archive(self.uploadFilePath)
           if not files.include? self.masterFileName
             if self.errors[:uploadFilePath].nil?
               self.errors[:uploadFilePath] = []
@@ -450,6 +456,22 @@ module LinkedData
         return File.join(self.data_folder, "owlapi.xrdf")
       end
 
+      def foops_folder
+        return File.join(self.data_folder, 'foops')
+      end
+
+      def foops_report_path
+        return File.join(self.foops_folder, 'report.json')
+      end
+
+      def oops_folder
+        return File.join(self.data_folder, 'oops')
+      end
+
+      def oops_report_path
+        return File.join(self.oops_folder, 'report.json')
+      end
+
       def documentation_folder
         return File.join(self.data_folder, 'widoco')
       end
@@ -490,7 +512,8 @@ module LinkedData
 
           # Set master file name automatically if there is only one file
           if extracted.length == 1 && self.masterFileName.nil?
-            self.masterFileName = extracted.first.name
+            # unzip returns absolute paths; masterFileName is the entry name, e.g. "dir/onto.owl"
+            self.masterFileName = extracted.first.delete_prefix(File.expand_path(zip_dst) + File::SEPARATOR)
             self.save
           end
 

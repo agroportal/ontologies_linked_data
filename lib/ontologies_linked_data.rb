@@ -46,6 +46,10 @@ require 'ontologies_linked_data/models/base'
 # Require all models and services
 project_root = File.dirname(File.absolute_path(__FILE__))
 # Require base services
+require 'ontologies_linked_data/execution/java_jar_runner'
+require 'ontologies_linked_data/quality/foops_command'
+require 'ontologies_linked_data/quality/oops_command'
+require 'ontologies_linked_data/quality/oops_report'
 require "ontologies_linked_data/documentation/documentation"
 
 require 'ontologies_linked_data/services/submission_process/submission_process'

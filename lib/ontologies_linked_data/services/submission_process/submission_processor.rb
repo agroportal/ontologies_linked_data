@@ -64,6 +64,10 @@ module LinkedData
 
             @submission.generate_diff(logger) if process_diff?(options)
 
+            @submission.generate_foops(logger) if parsed && generate_foops?(options)
+
+            @submission.generate_oops(logger) if parsed && generate_oops?(options)
+
             @submission.generate_documentation(logger) if generate_documentation?(options)
           end
           @submission.save
@@ -120,6 +124,18 @@ module LinkedData
 
       def process_diff?(options)
         options.empty? || options[:diff].eql?(true)
+      end
+
+      def generate_foops?(options)
+        return false if @submission.hasOntologyLanguage&.umls?
+
+        options.empty? || options[:generate_foops].eql?(true)
+      end
+
+      def generate_oops?(options)
+        return false if @submission.hasOntologyLanguage&.umls?
+
+        options.empty? || options[:generate_oops].eql?(true)
       end
 
       def generate_documentation?(options)

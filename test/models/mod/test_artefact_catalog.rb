@@ -28,11 +28,13 @@ class TestArtefactCatalog < LinkedData::TestOntologyCommon
       sampleQueries: [],
       logo: "https://ontoportal.org/images/logo.png",
       license: "https://opensource.org/licenses/BSD-2-Clause",
+      # Stored as Hash#to_s, whose format changed in Ruby 3.4
       federated_portals: [
-        "{:name=>\"agroportal\", :api=>\"http://data.agroportal.lirmm.fr\", :ui=>\"http://agroportal.lirmm.fr\", :apikey=>\"DUMMY_API_KEY_123456\", :color=>\"#3cb371\"}"
+        { name: "agroportal", api: "http://data.agroportal.lirmm.fr", ui: "http://agroportal.lirmm.fr",
+          apikey: "DUMMY_API_KEY_123456", color: "#3cb371" }.to_s
       ],
       fundedBy: [
-        "{:img_src=>\"https://ontoportal.org/images/logo.png\", :url=>\"https://ontoportal.org/\"}"
+        { img_src: "https://ontoportal.org/images/logo.png", url: "https://ontoportal.org/" }.to_s
       ],
       language: ["English"],
       keyword: [],

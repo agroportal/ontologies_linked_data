@@ -80,16 +80,6 @@ class TestOntologySubmission < LinkedData::TestOntologyCommon
     assert_equal 0, ont_submision.errors.length
   end
 
-  def test_automaster_from_zip
-    zipfile = "./test/data/ontology_files/SDO.zip"
-    assert LinkedData::Utils::FileHelpers.automaster?(zipfile, ".owl")
-    assert_equal "SDO.owl", LinkedData::Utils::FileHelpers.automaster(zipfile, ".owl")
-
-    zipfile = "./test/data/ontology_files/evoc_v2.9.zip"
-    assert !LinkedData::Utils::FileHelpers.automaster?(zipfile, ".obo")
-    assert_equal nil, LinkedData::Utils::FileHelpers.automaster(zipfile, ".obo")
-  end
-
   def test_duplicated_file_names
 
     acronym = "DUPTEST"
@@ -210,7 +200,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT DISTINCT * WHERE {
 <http://purl.obolibrary.org/obo/TAO_0001044>
-  <http://data.bioontology.org/metadata/obo/part_of> ?x . }
+  <http://purl.obolibrary.org/obo/OBO_REL#_part_of> ?x . }
     eos
     count = 0
     Goo.sparql_query_client.query(qcount).each_solution do |sol|
@@ -218,6 +208,20 @@ SELECT DISTINCT * WHERE {
       assert sol[:x].to_s["TAO_0000732"]
     end
     assert count == 1
+
+    # The wrapper used to emit each OBO relationship twice: under
+    # metadata/obo/<rel> and under the property's own IRI. Guard against
+    # the duplicate coming back.
+    qlegacy = <<-eos
+SELECT DISTINCT * WHERE {
+<http://purl.obolibrary.org/obo/TAO_0001044>
+  <http://data.bioontology.org/metadata/obo/part_of> ?x . }
+    eos
+    count = 0
+    Goo.sparql_query_client.query(qlegacy).each_solution do |sol|
+      count += 1
+    end
+    assert_equal 0, count
 
     sub = LinkedData::Models::OntologySubmission.where(ontology: [acronym: "TAO-TEST"]).first
     assert_equal(3, sub.roots.length, "Incorrect number of root classes")
@@ -305,6 +309,37 @@ SELECT DISTINCT * WHERE {
     assert sub.version["Date: 11-2011"]
   end
 
+  # IAO:0000700 ("has ontology root term") declared on the ontology is extracted
+  # into the submission's hasOntologyRootTerm attribute (a list of class URIs).
+  def test_extract_ontology_root_terms
+    submission_parse("ROOTTERMS", "Root terms TEST",
+                     "./test/data/ontology_files/custom_root_terms.owl", 1,
+                     process_rdf: true, extract_metadata: true)
+
+    sub = LinkedData::Models::OntologySubmission
+          .where(ontology: [acronym: "ROOTTERMS"], submissionId: 1)
+          .include(:hasOntologyRootTerm).first
+    refute_nil sub
+
+    roots = Array(sub.hasOntologyRootTerm).map(&:to_s).sort
+    assert_equal ["http://bioportal.bioontology.org/ontologies/msotes#class1",
+                  "http://bioportal.bioontology.org/ontologies/msotes#class2"],
+                 roots
+  end
+
+  # An ontology without IAO:0000700 leaves hasOntologyRootTerm empty (not an error).
+  def test_extract_ontology_root_terms_absent
+    submission_parse("NOROOTTERMS", "No root terms TEST",
+                     "./test/data/ontology_files/custom_properties.owl", 1,
+                     process_rdf: true, extract_metadata: true)
+
+    sub = LinkedData::Models::OntologySubmission
+          .where(ontology: [acronym: "NOROOTTERMS"], submissionId: 1)
+          .include(:hasOntologyRootTerm).first
+    refute_nil sub
+    assert_empty Array(sub.hasOntologyRootTerm)
+  end
+
   def test_generate_language_preflabels
     submission_parse("D3OTEST", "DSMZ Digital Diversity Ontology Test",
                      "./test/data/ontology_files/d3o.owl", 1,
@@ -323,6 +358,23 @@ SELECT DISTINCT * WHERE {
     res = LinkedData::Models::Class.search("prefLabel_fr:éléments techniques", {:fq => "submissionAcronym:EPOTEST", :start => 0, :rows => 100})
     refute_equal 0, res["response"]["numFound"]
     refute_nil res["response"]["docs"].select{|doc| doc["resource_id"].eql?('http://www.semanticweb.org/ontologies/epo.owl#OPPIO_t000000')}.first
+  end
+
+  def test_generate_missing_labels_per_language
+    submission_parse("MULTILANGTEST", "Multilingual rdfs:label without prefLabel",
+                     "./test/data/ontology_files/multilingual_labels.owl", 1,
+                     process_rdf: true, extract_metadata: false)
+
+    # Read every language, as the UI does with language=all
+    RequestStore.store[:requested_lang] = :ALL
+    sub = LinkedData::Models::Ontology.find("MULTILANGTEST").first.latest_submission
+    cls = LinkedData::Models::Class.find(RDF::URI.new("http://example.org/multilingual_labels#Apple"))
+                                   .in(sub).include(:prefLabel).first
+
+    # Each language keeps its own rdfs:label, not the first one generated
+    assert_equal({ en: "apple", fr: "pomme", it: "mela" }, cls.prefLabel(include_languages: true))
+  ensure
+    RequestStore.store[:requested_lang] = nil
   end
 
   def test_process_submission_diff
@@ -444,8 +496,7 @@ SELECT DISTINCT * WHERE {
                      "./test/data/ontology_files/BRO_v3.5.owl", 1,
                      process_rdf: true, extract_metadata: false, index_properties: true)
     res = LinkedData::Models::OntologyProperty.search("*:*", {:fq => "submissionAcronym:\"BRO\"", :start => 0, :rows => 80})
-    #assert_equal 81, res["response"]["numFound"] # if 81 if owlapi import skos properties
-    assert_equal 77, res["response"]["numFound"] # if 81 if owlapi import skos properties
+    assert_equal 81, res["response"]["numFound"] # 81 now that owlapi imports SKOS properties
     found = 0
 
     res["response"]["docs"].each do |doc|

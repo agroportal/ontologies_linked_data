@@ -50,6 +50,14 @@ module LinkedData
         LinkedData::Services::SubmissionRDFGenerator.new(self).process(logger, reasoning: reasoning)
       end
 
+      def generate_foops(logger)
+        LinkedData::Services::SubmissionFoopsGenerator.new(self).process(logger)
+      end
+
+      def generate_oops(logger)
+        LinkedData::Services::SubmissionOopsGenerator.new(self).process(logger)
+      end
+
       def generate_documentation(logger)
         LinkedData::Services::SubmissionDocumentationGenerator.new(self).process(logger)
       end
