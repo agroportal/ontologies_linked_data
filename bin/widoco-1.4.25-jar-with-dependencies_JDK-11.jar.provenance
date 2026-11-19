@@ -1,0 +1,23 @@
+Widoco runnable jar — provenance
+================================
+
+Artifact:  bin/widoco-1.4.25-jar-with-dependencies_JDK-11.jar  (symlinked as bin/widoco.jar)
+SHA-256:   ce3071a90fe73c0860829569e79050f74c9623d6add8be3925cbdf87bedde5a5
+
+Source
+------
+Upstream release asset, unmodified:
+Release:   https://github.com/dgarijo/Widoco/releases/tag/v1.4.25
+Asset:     https://github.com/dgarijo/Widoco/releases/download/v1.4.25/widoco-1.4.25-jar-with-dependencies_JDK-11.jar
+Commit:    dgarijo/Widoco @ e6dbf9ffe08f92ab6fc3b24a441377be6b37b81b (tag v1.4.25)
+
+Build
+-----
+Built by the upstream release workflow (Maven 3.8.8, JDK 11.0.23, per the jar manifest).
+The SHA-256 above matches the downloaded release asset.
+
+Usage
+-----
+java -jar bin/widoco.jar -ontFile <ontology.rdf> -outFolder <dir> -rewriteAll \
+  -getOntologyMetadata -includeAnnotationProperties -htaccess -licensius \
+  -noPlaceHolderText -lang en
