@@ -15,7 +15,8 @@ module LinkedData
         "DIFF", "ERROR_DIFF",
         "ERROR_TDV5",
         "FAIRNESS_FOOPS", "ERROR_FAIRNESS_FOOPS",
-        "PITFALLS_OOPS", "ERROR_PITFALLS_OOPS"
+        "PITFALLS_OOPS", "ERROR_PITFALLS_OOPS",
+        "DOCUMENTATION", "ERROR_DOCUMENTATION"
       ]
 
       USER_READABLE = {
@@ -37,7 +38,9 @@ module LinkedData
         "FAIRNESS_FOOPS"           => "FAIRness assessed (FOOPS!)",
         "ERROR_FAIRNESS_FOOPS"     => "Error assessing FAIRness (FOOPS!)",
         "PITFALLS_OOPS"            => "Modelling pitfalls scanned (OOPS!)",
-        "ERROR_PITFALLS_OOPS"      => "Error scanning modelling pitfalls (OOPS!)"
+        "ERROR_PITFALLS_OOPS"      => "Error scanning modelling pitfalls (OOPS!)",
+        "DOCUMENTATION"            => "Documentation generated (Widoco)",
+        "ERROR_DOCUMENTATION"      => "Error generating documentation (Widoco)"
       }
 
       USER_IGNORE = [
