@@ -58,6 +58,10 @@ module LinkedData
         LinkedData::Services::SubmissionOopsGenerator.new(self).process(logger)
       end
 
+      def generate_vowl(logger)
+        LinkedData::Services::SubmissionVowlGenerator.new(self).process(logger)
+      end
+
       def generate_metrics(logger)
         LinkedData::Services::SubmissionMetricsCalculator.new(self).process(logger)
       end
