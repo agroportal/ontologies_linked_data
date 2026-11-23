@@ -3,7 +3,6 @@ require 'set'
 module LinkedData
   module Security
     class Authorization
-      APIKEYS_FOR_AUTHORIZATION = {}
       USER_APIKEY_PARAM = 'userapikey'.freeze
       API_KEY_PARAM = 'apikey'.freeze
 
@@ -107,19 +106,15 @@ module LinkedData
       def authorized?(apikey, env)
         return false if apikey.nil?
 
-        if APIKEYS_FOR_AUTHORIZATION.key?(apikey)
-          store_user(APIKEYS_FOR_AUTHORIZATION[apikey], env)
-        else
-          user = LinkedData::Models::User.where(apikey: apikey)
-                                         .include(LinkedData::Models::User.attributes(:all))
-                                         .first
-          return false if user.nil?
+        user = LinkedData::Models::User.where(apikey: apikey)
+                                       .include(LinkedData::Models::User.attributes(:all))
+                                       .first
+        return false if user.nil?
 
-          # This will kind-of break if multiple apikeys exist
-          # Though it is also kind-of ok since we just want to know if a user with corresponding key exists
+        # This will kind-of break if multiple apikeys exist
+        # Though it is also kind-of ok since we just want to know if a user with corresponding key exists
 
-          store_user(user, env)
-        end
+        store_user(user, env)
         true
       end
 
