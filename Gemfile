@@ -34,7 +34,7 @@ group :test do
   gem 'email_spec'
   gem 'minitest-reporters', '>= 0.5.0'
   gem 'mocha', '~> 2.7'
-  gem 'ontoportal_testkit', github: 'agroportal/ontoportal_testkit', branch: 'main'
+  gem 'ontoportal_testkit', github: 'ontoportal/ontoportal_testkit', branch: 'main'
   gem 'pry'
   gem 'simplecov'
   gem 'simplecov-cobertura' # for codecov.io
@@ -45,7 +45,7 @@ group :development do
   gem 'rubocop', require: false
 end
 # NCBO gems (can be from a local dev path or from rubygems/git)
-gem 'goo', github: 'agroportal/goo', branch: 'master'
+gem 'goo', github: 'ontoportal/goo', branch: 'master'
 
 gem 'net-ftp'
 gem 'public_suffix', '~> 5.1.1'
