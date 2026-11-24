@@ -1,5 +1,5 @@
 GIT
-  remote: https://github.com/agroportal/goo.git
+  remote: https://github.com/ontoportal/goo.git
   revision: 8e25ea9dc014cd9530d25366b0ad1901108d1f13
   branch: master
   specs:
@@ -21,7 +21,7 @@ GIT
       uuid
 
 GIT
-  remote: https://github.com/agroportal/ontoportal_testkit.git
+  remote: https://github.com/ontoportal/ontoportal_testkit.git
   revision: 3f670c9b3072a3550ce706bc9283bf09a3cd9c45
   branch: main
   specs:
