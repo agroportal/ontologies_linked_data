@@ -67,6 +67,8 @@ module LinkedData
             @submission.generate_foops(logger) if parsed && generate_foops?(options)
 
             @submission.generate_oops(logger) if parsed && generate_oops?(options)
+
+            @submission.generate_documentation(logger) if generate_documentation?(options)
           end
           @submission.save
           logger.info("Submission processing of #{@submission.id} completed successfully")
@@ -134,6 +136,12 @@ module LinkedData
         return false if @submission.hasOntologyLanguage&.umls?
 
         options.empty? || options[:generate_oops].eql?(true)
+      end
+
+      def generate_documentation?(options)
+        return false if @submission.hasOntologyLanguage&.umls?
+
+        options[:generate_documentation].eql?(true)
       end
 
       def process_metrics?(options)

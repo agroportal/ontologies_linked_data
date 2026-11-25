@@ -472,6 +472,10 @@ module LinkedData
         return File.join(self.oops_folder, 'report.json')
       end
 
+      def documentation_folder
+        return File.join(self.data_folder, 'widoco')
+      end
+
       def parsing_log_path
         return File.join(self.data_folder, 'parsing.log')
       end
