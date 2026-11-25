@@ -472,6 +472,14 @@ module LinkedData
         return File.join(self.oops_folder, 'report.json')
       end
 
+      def vowl_folder
+        return File.join(self.data_folder, 'vowl')
+      end
+
+      def vowl_json_path
+        return File.join(self.vowl_folder, 'ontology.json')
+      end
+
       def parsing_log_path
         return File.join(self.data_folder, 'parsing.log')
       end

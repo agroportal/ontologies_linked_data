@@ -82,6 +82,7 @@ module LinkedData
               LinkedData::Hypermedia::Link.new("mappings", lambda {|s| "ontologies/#{s.acronym}/mappings"}, LinkedData::Models::Mapping.type_uri),
               LinkedData::Hypermedia::Link.new("foops", lambda {|s| "ontologies/#{s.acronym}/foops"}, nil),
               LinkedData::Hypermedia::Link.new("oops", lambda {|s| "ontologies/#{s.acronym}/oops"}, nil),
+              LinkedData::Hypermedia::Link.new("vowl", lambda {|s| "ontologies/#{s.acronym}/vowl"}, nil),
               LinkedData::Hypermedia::Link.new("ui", lambda {|s| "https://#{LinkedData.settings.ui_host}/ontologies/#{s.acronym}"}, self.uri_type)
 
       # Access control

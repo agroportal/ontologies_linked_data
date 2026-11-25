@@ -1,0 +1,34 @@
+OWL2VOWL standalone jar — provenance
+====================================
+
+Artifact:  bin/OWL2VOWL-0.3.5-shaded.jar  (symlinked as bin/owl2vowl.jar)
+SHA-256:   939de16f4eee681398feb8cb6d0c7bea804a48933060f758ac1345745bd5dada
+
+Source
+------
+Upstream tag, unmodified:
+Release:   https://github.com/VisualDataWeb/OWL2VOWL/releases/tag/0.3.5
+Commit:    VisualDataWeb/OWL2VOWL @ 8b3bd03731432c1bc0b7eb7b9e26a0a676f5708f (tag 0.3.5)
+
+The release has no jar asset, so the standalone jar is built from the tag.
+
+Build
+-----
+Tools:     Maven 3.8.6, JDK 1.8.0_342 (per the jar manifest)
+Command:   mvn -B -DskipTests package -P standalone-release
+Output:    target/OWL2VOWL-0.3.5-shaded.jar (shaded, Main-Class de.uni_stuttgart.vis.vowl.owl2vowl.ConsoleMain)
+
+Check
+-----
+The 101 OWL2VOWL classes (de/uni_stuttgart/**) are byte-identical to the
+jar JitPack built from the same tag:
+https://jitpack.io/com/github/VisualDataWeb/OWL2VOWL/0.3.5/OWL2VOWL-0.3.5.jar
+The other classes are the shaded dependencies declared in the tag's pom.xml
+(OWL API 5.1.1 and its transitive dependencies).
+
+Usage
+-----
+java --add-opens java.base/java.lang=ALL-UNNAMED \
+  --add-opens java.base/java.lang.reflect=ALL-UNNAMED \
+  --add-opens java.base/java.util=ALL-UNNAMED \
+  -jar bin/owl2vowl.jar -file <ontology.rdf> -output <ontology.json>
